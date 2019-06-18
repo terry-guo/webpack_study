@@ -30,13 +30,11 @@ module.exports = {
         rules:[
             {
                 test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
                 use: [{
                     loader: 'babel-loader',
-                    // include: [
-                    //     path.resolve(__dirname,'node_modules/@admin'),
-                    // ],
                     options: {
-                        cacheDirectory: true
+                        presets: ["es2015"]
                     }
                 }]
             },

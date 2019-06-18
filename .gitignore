@@ -1,0 +1,13 @@
+**/node_modules/
+**/package-lock.json
+**/yarn.lock
+**/.vscode/
+public
+release
+release_zip
+
+dist
+distPub
+transPath
+.project
+.DS_Store

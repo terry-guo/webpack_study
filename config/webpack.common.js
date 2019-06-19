@@ -5,7 +5,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry:{ // 入口文件
-        app:'./src/index.js'
+        index:'./src/index.js',
     },
     // devtool: 'inline-source-map', //原始源代码
     // devServer:{
@@ -18,14 +18,27 @@ module.exports = {
             title:"小鱼干的webpack练习"
         }),
         new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
     ],
+
+    // optimization: { //将 lodash 分离到单独的 chunk,webpack4开始用optimization
+    //     splitChunks: {
+    //         cacheGroups: {
+    //             commons: {
+    //                 name: "commons", //生成的共享模块bundle的名字
+    //                 chunks: "initial", //只选择初始的chunks
+    //                 minChunks: 2, //有共享模块的chunks的最小数目 ，默认值是1
+    //             }
+    //         }
+    //     }
+    // },
     output:{
         filename:'[name].bundle.js',
+        chunkFilename: '[name].bundle.js',
         path:path.resolve(__dirname,'../dist'),
         // publicPath:'/'
     },
-    mode: "production",
+    // mode: "production",
     module:{
         rules:[
             {

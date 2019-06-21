@@ -1,42 +1,27 @@
-import _ from 'lodash'
-import printMe from './print.js'
-import './style.css';
-import { cube } from './math.js';
-console.log(process.env.NODE_ENV);
 
-if (process.env.NODE_ENV !== 'production') {
-   console.log('Looks like we are in development mode!');
- }
-
-
-function component() {
-    var element = document.createElement('div');
-    var preDom = document.createElement('pre');
-    // Lodash（目前通过一个 script 脚本引入）对于执行这一行是必需的
-    element.innerHTML = _.join(['这里是自搭建webpack测试：','Hello', 'webpack'], ' ');
-    element.classList.add('hello');
-
-    var btn = document.createElement("button")
-    btn.innerHTML = '点击测试'
-    btn.onclick = printMe;
-    element.appendChild(btn)
-
-    preDom.innerHTML = [
-           'Hello webpack!',
-           '5 cubed is equal to ' + cube(5)
-         ].join('\n\n');
- 
-    element.appendChild(preDom)
-    return element;
+function getComponent() {
+  return import(/* webpackChunkName: "lodash" */ 'lodash').then(a_b => {
+      var element = document.createElement('div');
+      element.innerHTML = a_b.join(['Dell', 'Lee'], '-');
+      // console.log(a_b);
+      console.log(_);
+      console.log(process.env.NODE_ENV);
+      
+      
+      return element;
+  })
   }
-  
-  let element = component(); // 当 print.js 改变导致页面重新渲染时，重新获取渲染的元素
-  document.body.appendChild(element);
 
-  if(module.hot){
-    module.hot.accept('./print.js',function(){
-      document.body.removeChild(element);
-      element = component(); // 重新渲染页面后，component 更新 click 事件处理
-      document.body.appendChild(element);
-    })
-  }
+getComponent().then(element => {
+    document.body.appendChild(element);
+});
+
+  // if(module.hot){
+  //   module.hot.accept('./print.js',function(){
+  //       document.body.removeChild(element);
+  //       getComponent().then(component => {
+  //         document.body.appendChild(component)
+  //       })
+    
+  //   })
+  // }

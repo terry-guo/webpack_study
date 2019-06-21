@@ -2,23 +2,30 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin') // 生成html文件
 const {CleanWebpackPlugin} = require('clean-webpack-plugin'); //清理 /dist 文件夹
 const webpack = require('webpack');
-
+// const _ = require("lodash")
 module.exports = {
     entry:{ // 入口文件
         index:'./src/index.js',
     },
-    // devtool: 'inline-source-map', //原始源代码
-    // devServer:{
-    //     contentBase:'./dist',
-    //     hot:true
-    // },
+    output:{
+        filename:'[name].bundle.js',
+        chunkFilename: '[name].bundle.js',
+        path:path.resolve(__dirname,'../dist'),
+        // publicPath:'/'
+    },
     plugins:[
-        new CleanWebpackPlugin(),
+        new CleanWebpackPlugin(), //清空dist目录文件
         new HtmlWebpackPlugin({
             title:"小鱼干的webpack练习"
         }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProvidePlugin({ //导入全局模块变量
+            _:"lodash", //项目中可以不需要引入lodash直接使用 _
+        }),
+        new webpack.DefinePlugin({ //导入全局变量
+            'process.env.NODE_ENV': JSON.stringify('development')
+        })
     ],
 
     // optimization: { //将 lodash 分离到单独的 chunk,webpack4开始用optimization
@@ -32,12 +39,7 @@ module.exports = {
     //         }
     //     }
     // },
-    output:{
-        filename:'[name].bundle.js',
-        chunkFilename: '[name].bundle.js',
-        path:path.resolve(__dirname,'../dist'),
-        // publicPath:'/'
-    },
+ 
     // mode: "production",
     module:{
         rules:[
